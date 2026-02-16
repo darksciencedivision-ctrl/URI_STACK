@@ -1,0 +1,6 @@
+{
+  "model": "gpt3.5-turbo",
+  "aborted": false,
+  "error": "URLError: HTTP Error 404: Not Found | format_failed",
+  "elapsed_s": 2.055
+}

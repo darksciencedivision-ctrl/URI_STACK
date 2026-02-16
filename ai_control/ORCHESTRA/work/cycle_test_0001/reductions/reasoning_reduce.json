@@ -1,0 +1,9 @@
+{
+  "model": "gpt3.5-turbo",
+  "role": "reasoning",
+  "key_points": [],
+  "assumptions": [],
+  "risks": [],
+  "confidence": 0,
+  "notes": ""
+}

@@ -1,0 +1,12 @@
+{
+  "cycle_id": "cycle_test_0001",
+  "role": "generalist",
+  "model": "davinci-002",
+  "prompt_path": "C:\\ai_control\\ORCHESTRA\\work\\cycle_test_0001\\specialist_requests\\generalist.txt",
+  "max_tokens": 2048,
+  "temperature": 0.7,
+  "top_p": 0.9,
+  "stream": true,
+  "request_timeout_seconds": 900,
+  "stall_watchdog_seconds": 120
+}

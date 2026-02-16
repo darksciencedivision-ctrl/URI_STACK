@@ -1,0 +1,6 @@
+{
+  "model": "davinci-002",
+  "aborted": false,
+  "error": "URLError: HTTP Error 404: Not Found | format_failed",
+  "elapsed_s": 2.048
+}

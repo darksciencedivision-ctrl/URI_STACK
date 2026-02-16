@@ -1,0 +1,1 @@
+Analyze the provided candidates for generating JSON keys and ensure they meet the criteria for a reducer output object. If no candidates are provided or they fail validation, provide a valid structure including necessary keys for the reducer output.

@@ -1,0 +1,15 @@
+{
+  "task_type": "code",
+  "selected_models": [
+    {"role":"reasoning","model":"gpt3.5-turbo","why":"To validate and improve the logic for JSON key generation.","max_tokens":2048},
+    {"role":"generalist","model":"davinci-002","why":"General code generation and improvement.","max_tokens":2048}
+  ],
+  "skipped_models": [],
+  "timeouts": {"request_timeout_seconds": 900, "stall_watchdog_seconds": 120},
+  "work_orders": {
+    "reasoning": "Analyze the provided candidates for generating JSON keys and ensure they meet the criteria for a reducer output object. If no candidates are provided or they fail validation, provide a valid structure including necessary keys for the reducer output.",
+    "coder": "Generate a correct set of JSON keys for a reducer output object based on the analysis from the reasoning model, ensuring all required elements are present and correctly formatted.",
+    "vision": "",
+    "generalist": ""
+  }
+}

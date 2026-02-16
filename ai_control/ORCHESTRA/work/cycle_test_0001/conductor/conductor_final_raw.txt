@@ -1,0 +1,51 @@
+{
+  "response_to_user_md": "There was an issue processing your request due to a model error. Please try again.",
+  "praxis_writeback": {
+    "meta": {
+      "cycle_id": "cycle_test_0001",
+      "timestamp_utc": "2023-11-15T12:00:00Z",
+      "source": "conductor",
+      "conductor_model": "qwen2.5:32b-instruct",
+      "task_type": "mixed",
+      "status": "degraded"
+    },
+    "inputs": {
+      "user_prompt": "",
+      "praxis_state_hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "attached_artifacts": []
+    },
+    "model_summaries": [],
+    "reconciled_synthesis": {
+      "truths": [],
+      "unknowns": ["Model error encountered"],
+      "assumptions": [],
+      "key_decisions": []
+    },
+    "recommendations": {
+      "best_option": {
+        "title": "Retry Request",
+        "description": "Due to the model error, it is recommended that you retry your request.",
+        "steps": ["Resubmit the user prompt"],
+        "validation": ["Ensure no errors in input"]
+      },
+      "alternatives": []
+    },
+    "risks": [],
+    "next_actions": [],
+    "memory_updates": {
+      "add": [],
+      "update": [],
+      "remove": []
+    },
+    "next_prompt_templates": {
+      "followup_question": "",
+      "execution_prompt": ""
+    }
+  },
+  "reconciled": {
+    "agreements": [],
+    "conflicts": [{"topic":"Model Error","model_a":"qwen2.5:32b-instruct","model_b":"","resolution":"Retry"}],
+    "unknowns": ["Model error encountered"],
+    "chosen_path": {"title":"Retry Request","because":"Model encountered an HTTP 404 Not Found Error"}
+  }
+}

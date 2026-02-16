@@ -1,0 +1,35 @@
+﻿# ---- Python ----
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+
+# ---- Runtime artifacts ----
+STOP
+*.log
+*.db
+
+# ORCHESTRA runtime folders
+ai_control/ORCHESTRA/outbox/
+ai_control/ORCHESTRA/archive/
+ai_control/ORCHESTRA/logs/
+ai_control/ORCHESTRA/data/
+ai_control/ORCHESTRA/inbox/job.json
+
+# PRAXIS runtime folders
+ai_control/PRAXIS/outbox/
+ai_control/PRAXIS/archive/
+ai_control/PRAXIS/logs/
+ai_control/PRAXIS/inbox/user_prompt.txt
+
+# URI runtime folders
+URI/data/
+URI/logs/
+URI/rrr_queue/
+URI/rrr_responses/
+
+# OS noise
+.DS_Store
+Thumbs.db

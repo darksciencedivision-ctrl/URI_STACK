@@ -1,0 +1,1 @@
+﻿Generate JSON keys for a reducer output object.

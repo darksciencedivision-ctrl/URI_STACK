@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>URI Research Console (File Bus)</title>
+  <style>
+    body { margin:0; font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Arial; background:#0b0e14; color:#e8eefc; }
+    header { padding:12px 14px; background:#111726; border-bottom:1px solid #22304d; display:flex; gap:12px; align-items:center; }
+    header h1 { font-size:14px; margin:0; font-weight:600; }
+    .pill { font-size:12px; padding:4px 8px; border:1px solid #2b3a5c; border-radius:999px; color:#b9c7e6; }
+    .layout { display:grid; grid-template-columns: 320px 1fr 520px; gap:12px; padding:12px; }
+    .card { background:#0f1422; border:1px solid #22304d; border-radius:12px; overflow:hidden; }
+    .card h2 { margin:0; padding:10px 12px; font-size:13px; border-bottom:1px solid #22304d; color:#cfe0ff; }
+    .body { padding:10px 12px; }
+    .muted { color:#9db0d8; font-size:12px; }
+    input, select, textarea, button { font: inherit; }
+    input, select { width:100%; background:#0b0e14; color:#e8eefc; border:1px solid #22304d; border-radius:10px; padding:8px; }
+    textarea { width:100%; min-height: 240px; background:#0b0e14; color:#e8eefc; border:1px solid #22304d; border-radius:10px; padding:8px; resize: vertical; }
+    button { background:#1c2a44; color:#e8eefc; border:1px solid #2b3a5c; border-radius:10px; padding:9px 10px; cursor:pointer; }
+    button:hover { background:#223253; }
+    .row { display:flex; gap:10px; align-items:center; }
+    .row > * { flex:1; }
+    .list { display:flex; flex-direction:column; gap:8px; }
+    .item { padding:8px; border:1px solid #22304d; border-radius:10px; cursor:pointer; }
+    .item.active { background:#1c2a44; border-color:#2b3a5c; }
+    pre { white-space:pre-wrap; word-break:break-word; background:#0b0e14; border:1px solid #22304d; border-radius:10px; padding:10px; margin:0; }
+    .tabs { display:flex; gap:8px; padding:10px 12px; border-bottom:1px solid #22304d; background:#0f1422; flex-wrap:wrap; }
+    .tab { padding:6px 10px; border:1px solid #22304d; border-radius:10px; font-size:12px; color:#b9c7e6; cursor:pointer; user-select:none; }
+    .tab.active { background:#1c2a44; color:#e8eefc; border-color:#2b3a5c; }
+    .small { font-size:12px; }
+    .split { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>URI Research Console</h1>
+  <span class="pill" id="pillHealth">health: …</span>
+  <span class="pill" id="pillJob">job.json: …</span>
+  <span class="pill" id="pillCycle">last cycle: …</span>
+</header>
+
+<div class="layout">
+  <!-- LEFT: Conversations -->
+  <div class="card">
+    <h2>Conversations (ORCHESTRA)</h2>
+    <div class="body">
+      <div class="row">
+        <button id="btnRefreshConvs">Refresh</button>
+        <button id="btnNewConv">New</button>
+      </div>
+      <div style="height:10px"></div>
+      <div class="muted small">Select a conversation_id for “Continue”. Single-shot jobs can leave this blank.</div>
+      <div style="height:10px"></div>
+      <div id="convList" class="list"></div>
+      <div style="height:10px"></div>
+      <div class="muted small">Selected:</div>
+      <input id="conversationId" placeholder="conversation_id (optional)" />
+    </div>
+  </div>
+
+  <!-- CENTER: Composer -->
+  <div class="card">
+    <h2>Job Composer (writes prompt + job.json to file bus)</h2>
+    <div class="body">
+      <div class="row">
+        <div>
+          <div class="muted">cycle_id (optional)</div>
+          <input id="cycleId" placeholder="cycle_..." />
+        </div>
+        <div>
+          <div class="muted">model (NEXT job)</div>
+          <select id="modelSelect"></select>
+        </div>
+      </div>
+
+      <div style="height:10px"></div>
+
+      <div class="split">
+        <div>
+          <div class="muted">mode</div>
+          <select id="modeSelect">
+            <option value="single" selected>single</option>
+            <option value="rrr">rrr</option>
+          </select>
+        </div>
+        <div>
+          <div class="muted">reflect</div>
+          <select id="reflectSelect">
+            <option value="false" selected>false</option>
+            <option value="true">true</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="rrrPanel" style="display:none; margin-top:10px">
+        <div class="muted">RRR config (reasoner / critic / reducer)</div>
+        <div class="split" style="margin-top:8px">
+          <div>
+            <div class="muted small">reasoner_model</div>
+            <select id="rrrReasoner"></select>
+          </div>
+          <div>
+            <div class="muted small">critic_model</div>
+            <select id="rrrCritic"></select>
+          </div>
+        </div>
+        <div class="split" style="margin-top:8px">
+          <div>
+            <div class="muted small">reducer_model</div>
+            <select id="rrrReducer"></select>
+          </div>
+          <div>
+            <div class="muted small">max_turns</div>
+            <input id="rrrTurns" type="number" value="6" min="1" max="10"/>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:10px"></div>
+
+      <div class="split">
+        <div>
+          <div class="muted">temperature</div>
+          <input id="optTemp" type="number" step="0.05" value="0.2"/>
+        </div>
+        <div>
+          <div class="muted">top_p</div>
+          <input id="optTopP" type="number" step="0.05" value="0.9"/>
+        </div>
+      </div>
+
+      <div style="height:10px"></div>
+
+      <div class="split">
+        <div>
+          <div class="muted">max_new_tokens</div>
+          <input id="optMax" type="number" step="1" value="512"/>
+        </div>
+        <div>
+          <div class="muted">context_window</div>
+          <input id="optCtx" type="number" step="256" value="8192"/>
+        </div>
+      </div>
+
+      <div style="height:10px"></div>
+
+      <textarea id="prompt" placeholder="Prompt / chat message. Written to PRAXIS inbox and referenced by ORCHESTRA job.json."></textarea>
+
+      <div style="height:10px"></div>
+
+      <div class="row">
+        <button id="btnSubmit">Submit Job</button>
+        <button id="btnRefresh">Refresh Status</button>
+      </div>
+
+      <div style="height:10px"></div>
+      <div class="muted small" id="submitResult">…</div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Tabs -->
+  <div class="card">
+    <div class="tabs">
+      <div class="tab active" data-tab="obs_raw">Raw</div>
+      <div class="tab" data-tab="obs_reducer">Reducer</div>
+      <div class="tab" data-tab="obs_md">Response</div>
+      <div class="tab" data-tab="obs_rrr">RRR</div>
+      <div class="tab" data-tab="obs_reflect">Reflection</div>
+      <div class="tab" data-tab="obs_canon">Canonical</div>
+      <div class="tab" data-tab="memory">Memory</div>
+      <div class="tab" data-tab="logs">Logs</div>
+      <div class="tab" data-tab="archive">Archive</div>
+    </div>
+    <div class="body">
+      <pre id="viewer">Loading…</pre>
+    </div>
+  </div>
+</div>
+
+<script>
+  const viewer = document.getElementById('viewer');
+  const pillHealth = document.getElementById('pillHealth');
+  const pillJob = document.getElementById('pillJob');
+  const pillCycle = document.getElementById('pillCycle');
+
+  const modelSelect = document.getElementById('modelSelect');
+  const rrrReasoner = document.getElementById('rrrReasoner');
+  const rrrCritic = document.getElementById('rrrCritic');
+  const rrrReducer = document.getElementById('rrrReducer');
+
+  const state = { tab: "obs_raw", logTimer: null, artifactTimer: null, convs: [], activeConv: "" };
+
+  function $(id){ return document.getElementById(id); }
+
+  function prettyJson(text){
+    try { return JSON.stringify(JSON.parse(text), null, 2); }
+    catch { return text; }
+  }
+
+  async function apiGet(url){
+    const r = await fetch(url);
+    if(!r.ok) throw new Error(`GET ${url} -> ${r.status}`);
+    return await r.text();
+  }
+  async function apiGetJson(url){
+    const r = await fetch(url);
+    if(!r.ok) throw new Error(`GET ${url} -> ${r.status}`);
+    return await r.json();
+  }
+  async function apiPostJson(url, body){
+    const r = await fetch(url, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(body)});
+    if(!r.ok) throw new Error(`POST ${url} -> ${r.status}`);
+    return await r.json();
+  }
+
+  async function loadHealth(){
+    try {
+      const h = await apiGetJson('/api/health');
+      pillHealth.textContent = `health: ok | ollama: ${h.ollama ? "true":"false"} | models: ${h.models.length}`;
+
+      // Populate model dropdowns
+      const models = (h.models || []);
+      const fill = (sel, preferred) => {
+        sel.innerHTML = "";
+        if(models.length === 0){
+          const opt = document.createElement('option');
+          opt.value = preferred || "";
+          opt.textContent = preferred || "(no models)";
+          sel.appendChild(opt);
+          return;
+        }
+        models.forEach(m => {
+          const opt = document.createElement('option');
+          opt.value = m;
+          opt.textContent = m;
+          if(preferred && m === preferred) opt.selected = true;
+          sel.appendChild(opt);
+        });
+      };
+
+      fill(modelSelect, h.current_model || "qwen2.5:32b-instruct");
+      fill(rrrReasoner, "qwen2.5:32b-instruct");
+      fill(rrrCritic, "deepseek-r1:14b");
+      fill(rrrReducer, "qwen2.5:14b-instruct");
+    } catch(e){
+      pillHealth.textContent = `health: error`;
+    }
+  }
+
+  async function loadStatus(){
+    try {
+      const s = await apiGetJson('/api/status');
+      pillJob.textContent = `job.json: ${s.job && s.job.exists ? "present":"absent"}`;
+
+      // attempt to read last cycle from reducer if present
+      let lastCycle = "unknown";
+      if(s.artifacts && s.artifacts.reducer_output && s.artifacts.reducer_output.exists){
+        try {
+          const t = await apiGet('/api/artifact?name=reducer_output');
+          const o = JSON.parse(t);
+          lastCycle = o.cycle_id || "unknown";
+        } catch {}
+      }
+      pillCycle.textContent = `last cycle: ${lastCycle}`;
+    } catch(e){
+      pillJob.textContent = `job.json: ?`;
+      pillCycle.textContent = `last cycle: ?`;
+    }
+  }
+
+  async function loadConversations(){
+    const list = $('convList');
+    list.innerHTML = "";
+    try {
+      const j = await apiGetJson('/api/conversations');
+      state.convs = j.conversations || [];
+      state.convs.forEach(c => {
+        const div = document.createElement('div');
+        div.className = "item" + (state.activeConv === c.conversation_id ? " active":"");
+        div.textContent = `${c.conversation_id} (${c.message_count})`;
+        div.title = `last: ${c.last_utc}`;
+        div.onclick = () => {
+          state.activeConv = c.conversation_id;
+          $('conversationId').value = c.conversation_id;
+          loadConversations();
+        };
+        list.appendChild(div);
+      });
+      if(state.convs.length === 0){
+        const div = document.createElement('div');
+        div.className = "muted small";
+        div.textContent = "(no conversations yet)";
+        list.appendChild(div);
+      }
+    } catch {
+      const div = document.createElement('div');
+      div.className = "muted small";
+      div.textContent = "(failed to load conversations)";
+      list.appendChild(div);
+    }
+  }
+
+  async function renderTab(){
+    if(state.logTimer){ clearInterval(state.logTimer); state.logTimer = null; }
+    if(state.artifactTimer){ clearInterval(state.artifactTimer); state.artifactTimer = null; }
+
+    const tab = state.tab;
+
+    if(tab === "obs_raw"){
+      async function load(){ try { viewer.textContent = await apiGet('/api/artifact?name=raw_model_output'); } catch { viewer.textContent = "(raw_model_output.txt not found yet)"; } }
+      await load();
+      state.artifactTimer = setInterval(load, 2000);
+      return;
+    }
+
+    if(tab === "obs_reducer"){
+      async function load(){ try { viewer.textContent = prettyJson(await apiGet('/api/artifact?name=reducer_output')); } catch { viewer.textContent = "(reducer_output.json not found yet)"; } }
+      await load();
+      state.artifactTimer = setInterval(load, 2000);
+      return;
+    }
+
+    if(tab === "obs_md"){
+      async function load(){ try { viewer.textContent = await apiGet('/api/artifact?name=response_to_user'); } catch { viewer.textContent = "(response_to_user.md not found yet)"; } }
+      await load();
+      state.artifactTimer = setInterval(load, 2000);
+      return;
+    }
+
+    if(tab === "obs_rrr"){
+      async function load(){ try { viewer.textContent = prettyJson(await apiGet('/api/artifact?name=rrr_dialogue')); } catch { viewer.textContent = "(rrr_dialogue.json not found; run mode=rrr)"; } }
+      await load();
+      state.artifactTimer = setInterval(load, 2000);
+      return;
+    }
+
+    if(tab === "obs_reflect"){
+      async function load(){ try { viewer.textContent = await apiGet('/api/artifact?name=reflection_output'); } catch { viewer.textContent = "(reflection_output.txt not found; run reflect=true)"; } }
+      await load();
+      state.artifactTimer = setInterval(load, 2000);
+      return;
+    }
+
+    if(tab === "obs_canon"){
+      async function load(){ try { viewer.textContent = prettyJson(await apiGet('/api/artifact?name=canonical_state')); } catch { viewer.textContent = "(canonical_state.json not found yet)"; } }
+      await load();
+      state.artifactTimer = setInterval(load, 2000);
+      return;
+    }
+
+    if(tab === "memory"){
+      async function load(){
+        try {
+          const j = await apiGetJson('/api/memory');
+          const m = j.memory || {};
+          const out = [];
+          out.push("=== Entity State ===");
+          out.push(prettyJson(JSON.stringify(m.entity_state || {}, null, 2)));
+          out.push("\n=== Observations ===");
+          (m.observations || []).slice(-50).forEach(x => out.push(`- ${x.timestamp_utc} :: ${x.text}`));
+          out.push("\n=== Beliefs ===");
+          (m.beliefs || []).slice(-50).forEach(x => out.push(`- ${x.timestamp_utc} [${x.confidence}] :: ${x.text}`));
+          out.push("\n=== Knowledge ===");
+          (m.knowledge || []).slice(-50).forEach(x => out.push(`- ${x.timestamp_utc} [${x.topic}] :: ${x.text}`));
+          viewer.textContent = out.join("\n");
+        } catch {
+          viewer.textContent = "(memory unavailable)";
+        }
+      }
+      await load();
+      state.artifactTimer = setInterval(load, 3000);
+      return;
+    }
+
+    if(tab === "logs"){
+      async function loadLogs(){
+        const lines = 200;
+        let out = "";
+        try { out += "=== URI ===\n" + await apiGet(`/api/tail?target=uri&lines=${lines}`) + "\n\n"; } catch { out += "=== URI ===\n(tail failed)\n\n"; }
+        try { out += "=== ORCHESTRA ===\n" + await apiGet(`/api/tail?target=orchestra&lines=${lines}`) + "\n\n"; } catch { out += "=== ORCHESTRA ===\n(tail failed)\n\n"; }
+        try { out += "=== PRAXIS ===\n" + await apiGet(`/api/tail?target=praxis&lines=${lines}`) + "\n\n"; } catch { out += "=== PRAXIS ===\n(tail failed)\n\n"; }
+        viewer.textContent = out.trim();
+      }
+      await loadLogs();
+      state.logTimer = setInterval(loadLogs, 1500);
+      return;
+    }
+
+    if(tab === "archive"){
+        try{
+            const j = await apiGetJson('/api/archive/list');
+            const items = j.archive || [];
+            if(items.length === 0){
+                viewer.textContent = "(no archived jobs)";
+                return;
+            }
+            viewer.innerHTML = "";
+            const table = document.createElement('div');
+            table.style.cssText = "font-size:12px;";
+            items.slice(0, 80).forEach((it, idx) => {
+                const row = document.createElement('div');
+                row.style.cssText = "display:flex;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid #22304d;";
+                row.innerHTML = `<span style="color:#9db0d8;min-width:30px">${idx+1}.</span>`
+                    + `<span style="flex:1;word-break:break-all">${it.name}</span>`
+                    + `<span style="color:#9db0d8;min-width:160px">${it.mtime_utc}</span>`
+                    + `<span style="color:#9db0d8;min-width:60px">${it.size}b</span>`;
+                const viewBtn = document.createElement('button');
+                viewBtn.textContent = "View";
+                viewBtn.style.cssText = "font-size:11px;padding:3px 8px;";
+                viewBtn.onclick = async () => {
+                    try {
+                        const raw = await apiGet('/api/archive/get?name=' + encodeURIComponent(it.name));
+                        viewer.textContent = prettyJson(raw);
+                    } catch(e){ viewer.textContent = "Failed: " + e.message; }
+                };
+                const replayBtn = document.createElement('button');
+                replayBtn.textContent = "Replay";
+                replayBtn.style.cssText = "font-size:11px;padding:3px 8px;";
+                replayBtn.onclick = async () => {
+                    try {
+                        const res = await apiPostJson('/api/archive/replay', { name: it.name });
+                        viewer.textContent = "Replayed:\n" + prettyJson(JSON.stringify(res, null, 2));
+                        await loadStatus();
+                    } catch(e){ viewer.textContent = "Replay failed: " + e.message; }
+                };
+                row.appendChild(viewBtn);
+                row.appendChild(replayBtn);
+                table.appendChild(row);
+            });
+            viewer.appendChild(table);
+        } catch(e){
+            viewer.textContent = "(archive unavailable: " + e.message + ")";
+        }
+        return;
+    }
+  }
+
+  function setActiveTab(tab){
+    state.tab = tab;
+    document.querySelectorAll('.tab').forEach(el => el.classList.toggle('active', el.dataset.tab === tab));
+    renderTab();
+  }
+  document.querySelectorAll('.tab').forEach(el => el.addEventListener('click', () => setActiveTab(el.dataset.tab)));
+
+  $('modeSelect').addEventListener('change', () => {
+    const mode = $('modeSelect').value;
+    $('rrrPanel').style.display = (mode === "rrr") ? "block" : "none";
+  });
+
+  $('btnRefresh').addEventListener('click', async () => {
+    await loadHealth();
+    await loadStatus();
+    await renderTab();
+  });
+
+  $('btnRefreshConvs').addEventListener('click', loadConversations);
+
+  $('btnNewConv').addEventListener('click', () => {
+    const cid = `conv_${crypto.getRandomValues(new Uint32Array(1))[0].toString(16)}`;
+    state.activeConv = cid;
+    $('conversationId').value = cid;
+    loadConversations();
+  });
+
+  $('btnSubmit').addEventListener('click', async () => {
+    $('submitResult').textContent = "Submitting…";
+
+    const prompt = $('prompt').value || "";
+    const cycle_id = $('cycleId').value || "";
+    const model = modelSelect.value || "";
+
+    const conversation_id = ($('conversationId').value || "").trim() || null;
+
+    const mode = $('modeSelect').value;
+    const reflect = $('reflectSelect').value === "true";
+
+    const options = {
+      temperature: parseFloat($('optTemp').value || "0.2"),
+      top_p: parseFloat($('optTopP').value || "0.9"),
+      max_new_tokens: parseInt($('optMax').value || "512", 10),
+      context_window: parseInt($('optCtx').value || "8192", 10)
+    };
+
+    let rrr_config = null;
+    if(mode === "rrr"){
+      rrr_config = {
+        reasoner_model: rrrReasoner.value,
+        critic_model: rrrCritic.value,
+        reducer_model: rrrReducer.value,
+        max_turns: parseInt($('rrrTurns').value || "6", 10)
+      };
+    }
+
+    try {
+      const res = await apiPostJson('/api/submit_job', {
+        prompt, cycle_id, model,
+        conversation_id,
+        mode, rrr_config,
+        reflect,
+        options
+      });
+      $('submitResult').textContent = `Submitted: cycle_id=${res.cycle_id} mode=${res.mode} model=${res.model}`;
+      $('cycleId').value = res.cycle_id;
+      await loadStatus();
+      setActiveTab("logs");
+    } catch(e){
+      $('submitResult').textContent = `Submit failed: ${e.message}`;
+    }
+  });
+
+  (async () => {
+    await loadHealth();
+    await loadStatus();
+    await loadConversations();
+    await renderTab();
+    setInterval(loadStatus, 3000);
+  })();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,28 @@
+ROLE: generalist
+MODEL: davinci-002
+
+TASK:
+Validate and improve the Sovereign candidates below. Do NOT invent an unrelated plan unless all candidates fail.
+
+USER_PROMPT:
+﻿Generate JSON keys for a reducer output object.
+
+PRAXIS_EXCERPT:
+{
+  "identity": {},
+  "working_memory": {},
+  "policies": {},
+  "routing": {}
+}
+
+SOVEREIGN_TOP_CANDIDATES:
+
+
+STRICT RESPONSE CONTRACT (NON-NEGOTIABLE):
+SECTION A: PROPOSAL
+SECTION B: WHY IT WORKS (evidence/reasoning + assumptions)
+SECTION C: RISKS / FAILURES
+SECTION D: WHAT I NEED NEXT
+SECTION E: CONFIDENCE (0–100) (one integer)
+
+Return only these sections.

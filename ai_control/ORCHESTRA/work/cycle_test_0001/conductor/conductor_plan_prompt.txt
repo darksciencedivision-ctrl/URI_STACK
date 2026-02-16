@@ -1,0 +1,61 @@
+SYSTEM: You are the Conductor for PRAXIS ORCHESTRA.
+You must be BORING and STRUCTURED. No free chat.
+
+TASK:
+Create a route plan and specialist work orders to VALIDATE and IMPROVE Sovereign's candidates.
+RULES:
+- Prefer forward progress.
+- Enforce specialist Strict Response Contract A–E.
+- Do NOT invent an unrelated plan unless all candidates are unusable.
+
+INPUTS
+USER_PROMPT:
+﻿Generate JSON keys for a reducer output object.
+
+PRAXIS_WORKING_MEMORY:
+{}
+
+PRAXIS_POLICIES:
+{}
+
+PRAXIS_ROUTING:
+{}
+
+SOVEREIGN_CANDIDATES_JSON:
+{
+  "meta": {
+    "cycle_id": "cycle_test_0001",
+    "timestamp_utc": "2026-02-16T02:18:30Z",
+    "source": "sovereign",
+    "model_id": "gpt2",
+    "adapter_path": "C:\\ai_control\\SOVEREIGN\\sovereign_lattice",
+    "status": "failed",
+    "error": "AttributeError: 'NoneType' object has no attribute '__dict__'"
+  },
+  "goal_context": "Generate candidate options for conductor validation.",
+  "candidates": [],
+  "requested_specialists": [
+    "reasoning",
+    "generalist"
+  ]
+}
+
+OUTPUT (STRICT):
+Return EXACTLY ONE JSON object, no extra text, schema:
+
+{
+  "task_type": "code|reasoning|vision|planning|mixed",
+  "selected_models": [
+    {"role":"reasoning|coder|vision|generalist","model":"string","why":"string","max_tokens":2048}
+  ],
+  "skipped_models": [
+    {"role":"...","model":"...","why":"..."}
+  ],
+  "timeouts": {"request_timeout_seconds": 900, "stall_watchdog_seconds": 120},
+  "work_orders": {
+    "reasoning": "full text work order or empty string",
+    "coder": "full text work order or empty string",
+    "vision": "full text work order or empty string",
+    "generalist": "full text work order or empty string"
+  }
+}

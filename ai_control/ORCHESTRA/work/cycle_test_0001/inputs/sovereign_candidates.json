@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "cycle_id": "cycle_test_0001",
+    "timestamp_utc": "2026-02-16T02:18:30Z",
+    "source": "sovereign",
+    "model_id": "gpt2",
+    "adapter_path": "C:\\ai_control\\SOVEREIGN\\sovereign_lattice",
+    "status": "failed",
+    "error": "AttributeError: 'NoneType' object has no attribute '__dict__'"
+  },
+  "goal_context": "Generate candidate options for conductor validation.",
+  "candidates": [],
+  "requested_specialists": [
+    "reasoning",
+    "generalist"
+  ]
+}
