@@ -1,1 +1,62 @@
-﻿TODO: Add license text (recommended: your dual license).
+﻿DUAL LICENSE AGREEMENT
+
+Copyright (c) 2026 Sam Flynn
+
+Permission is hereby granted to use, copy, modify, and distribute this software
+and its associated documentation files under the following conditions:
+
+----------------------------------------------------------------------
+1. EDUCATIONAL / RESEARCH / PERSONAL USE (FREE)
+----------------------------------------------------------------------
+
+This software may be used freely for:
+
+• Educational purposes
+• Academic research
+• Personal non-commercial projects
+• Experimental / learning environments
+
+No fee, royalty, or permission is required for these uses.
+
+----------------------------------------------------------------------
+2. COMMERCIAL USE (REQUIRES EXPLICIT PERMISSION)
+----------------------------------------------------------------------
+
+Commercial use is NOT permitted without prior written authorization
+from the copyright holder.
+
+Commercial use includes, but is not limited to:
+
+• Selling the software
+• Using the software in a paid product or service
+• Integrating into proprietary/commercial systems
+• SaaS / hosted monetized deployments
+• Enterprise/internal business use
+
+To obtain a commercial license, contact:
+
+[INSERT CONTACT METHOD]
+
+----------------------------------------------------------------------
+3. RESTRICTIONS
+----------------------------------------------------------------------
+
+• The software may not be relicensed under a more permissive license
+  without explicit permission.
+
+• The software may not be used to train proprietary models or datasets
+  for commercial benefit without authorization.
+
+• Attribution must be preserved in all copies and substantial portions
+  of the software.
+
+----------------------------------------------------------------------
+4. DISCLAIMER
+----------------------------------------------------------------------
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
+ANY CLAIM, DAMAGES OR OTHER LIABILITY.
