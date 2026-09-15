@@ -1,62 +1,66 @@
-﻿DUAL LICENSE AGREEMENT
+Dark Science Division — Dual License
+Copyright (c) 2025-2026 Samuel Lawson (Dark Science Division)
 
-Copyright (c) 2026 Sam Flynn
+This work is dual-licensed. You may choose one of the following options under
+which to use, modify, and distribute this work. In this license, "the Work"
+means all source code, documentation, and written research materials contained
+in this repository.
 
-Permission is hereby granted to use, copy, modify, and distribute this software
-and its associated documentation files under the following conditions:
+---------------------------------------------------------------------------
+OPTION 1 — MIT-STYLE LICENSE (Open Source / Evaluation / Research / Non-Commercial)
+---------------------------------------------------------------------------
 
-----------------------------------------------------------------------
-1. EDUCATIONAL / RESEARCH / PERSONAL USE (FREE)
-----------------------------------------------------------------------
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of the Work and associated files, to deal in the Work without restriction,
+including without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Work, subject to the
+following conditions:
 
-This software may be used freely for:
+- This option applies to non-commercial use, academic use, personal use,
+  internal evaluation, and research purposes.
 
-• Educational purposes
-• Academic research
-• Personal non-commercial projects
-• Experimental / learning environments
+- Commercial use (including but not limited to selling, licensing, hosting,
+  embedding in proprietary products, or providing the Work as part of a paid
+  service) is NOT permitted under this option and requires Option 2.
 
-No fee, royalty, or permission is required for these uses.
+- Where this repository contains research or written materials, attribution to
+  the author is requested; where a CITATION file is present, please cite as
+  indicated there.
 
-----------------------------------------------------------------------
-2. COMMERCIAL USE (REQUIRES EXPLICIT PERMISSION)
-----------------------------------------------------------------------
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Work.
 
-Commercial use is NOT permitted without prior written authorization
-from the copyright holder.
+THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE WORK OR THE USE OR OTHER DEALINGS IN THE WORK.
+
+---------------------------------------------------------------------------
+OPTION 2 — COMMERCIAL LICENSE (Required for Commercial Use)
+---------------------------------------------------------------------------
+
+Any use of the Work for commercial purposes requires a separate commercial
+license agreement with the copyright holder.
 
 Commercial use includes, but is not limited to:
+- Use in proprietary or closed-source software
+- Internal deployment within a for-profit organization
+- Offering the Work or derivative works as part of a paid product or service
+- Hosting the Work as a service (SaaS, PaaS, internal tools)
+- Embedding the Work into revenue-generating systems
 
-• Selling the software
-• Using the software in a paid product or service
-• Integrating into proprietary/commercial systems
-• SaaS / hosted monetized deployments
-• Enterprise/internal business use
+Commercial licenses may include alternative licensing terms, support or
+consulting agreements, custom feature development, and warranty or liability
+arrangements.
 
 To obtain a commercial license, contact:
 
-[INSERT CONTACT METHOD]
+Samuel Lawson (Dark Science Division)
+Email: darksciencedivision@gmail.com
+GitHub: https://github.com/darksciencedivision-ctrl
 
-----------------------------------------------------------------------
-3. RESTRICTIONS
-----------------------------------------------------------------------
-
-• The software may not be relicensed under a more permissive license
-  without explicit permission.
-
-• The software may not be used to train proprietary models or datasets
-  for commercial benefit without authorization.
-
-• Attribution must be preserved in all copies and substantial portions
-  of the software.
-
-----------------------------------------------------------------------
-4. DISCLAIMER
-----------------------------------------------------------------------
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
-ANY CLAIM, DAMAGES OR OTHER LIABILITY.
+---------------------------------------------------------------------------
+END OF LICENSE
+---------------------------------------------------------------------------
